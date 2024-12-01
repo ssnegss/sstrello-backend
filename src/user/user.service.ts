@@ -3,9 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UserService {
-	private prisma;
-
-	constructor(prisma: PrismaService) {}
+	constructor(private prisma: PrismaService) {}
 
 	getById(id: string) {
 		return this.prisma.user.findUnique({
