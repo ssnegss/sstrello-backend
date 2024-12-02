@@ -7,6 +7,12 @@ import { PrismaService } from 'src/prisma.service';
 export class TaskService {
 	constructor(private prisma: PrismaService) {}
 
+	getAll(userId: string) {
+		return this.prisma.task.findMany({
+			where: { userId },
+		});
+	}
+
 	getCompleted(id: string) {
 		return this.prisma.task.count({
 			where: {
@@ -27,23 +33,34 @@ export class TaskService {
 		});
 	}
 
-	create(createTaskDto: CreateTaskDto) {
-		return 'This action adds a new task';
+	create(dto: CreateTaskDto, userId: string) {
+		return this.prisma.task.create({
+			data: {
+				...dto,
+				user: {
+					connect: {
+						id: userId,
+					},
+				},
+			},
+		});
 	}
 
-	findAll() {
-		return `This action returns all task`;
+	update(dto: UpdateTaskDto, taskId: string, userId: string) {
+		return this.prisma.task.update({
+			where: {
+				userId,
+				id: taskId,
+			},
+			data: dto,
+		});
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} task`;
-	}
-
-	update(id: number, updateTaskDto: UpdateTaskDto) {
-		return `This action updates a #${id} task`;
-	}
-
-	remove(id: number) {
-		return `This action removes a #${id} task`;
+	delete(taskId: string) {
+		return this.prisma.task.delete({
+			where: {
+				id: taskId,
+			},
+		});
 	}
 }
