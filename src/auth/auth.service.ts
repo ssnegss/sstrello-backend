@@ -1,16 +1,27 @@
 import { UserService } from './../user/user.service';
 import {
 	BadRequestException,
-	HttpException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto } from './dto/auth.dto';
 import { verify } from 'argon2';
+import { CookieOptions, Response } from 'express';
 
 @Injectable()
 export class AuthService {
+	EXPIRE_DAY_REFRESH_TOKEN = 1;
+	REFRESH_TOKEN_NAME = 'refreshToken';
+
+	private COOKIE_SETTINGS: CookieOptions = {
+		httpOnly: true,
+		domain: process.env.DOMAIN,
+		secure: true,
+		//lax if prod
+		sameSite: 'none',
+	};
+
 	constructor(
 		private jwt: JwtService,
 		private UserService: UserService,
@@ -64,5 +75,22 @@ export class AuthService {
 		if (!isValid) throw new NotFoundException('Password is invalid');
 
 		return user;
+	}
+
+	addRefreshTokenToResponse(res: Response, refreshToken: string) {
+		const expiresIn = new Date();
+		expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
+
+		res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
+			...this.COOKIE_SETTINGS,
+			expires: expiresIn,
+		});
+	}
+
+	removeRefreshTokenToResponse(res: Response) {
+		res.cookie(this.REFRESH_TOKEN_NAME, '', {
+			...this.COOKIE_SETTINGS,
+			expires: new Date(0),
+		});
 	}
 }
