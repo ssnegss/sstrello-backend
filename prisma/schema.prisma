@@ -26,9 +26,9 @@ model User {
   breakInterval  Int? @default(10) @map("break_interval")
   intervalsCount Int? @default(7) @map("intervals_count")
 
-  tasks            Task[]
-  timeBlocks       TimeBlock[]
-  pomodoroSessions PomodoroSession[]
+  tasks         Task[]
+  timeBlocks    TimeBlock[]
+  timerSessions TimerSession[]
 
   @@map("user")
 }
@@ -64,7 +64,7 @@ model TimeBlock {
   @@map("time_block")
 }
 
-model PomodoroSession {
+model TimerSession {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -74,12 +74,12 @@ model PomodoroSession {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
-  rounds PomodoroRound[]
+  rounds TimerRound[]
 
-  @@map("pomodoro_session")
+  @@map("timer_session")
 }
 
-model PomodoroRound {
+model TimerRound {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -87,10 +87,10 @@ model PomodoroRound {
   totalSeconds Int     @map("total_seconds")
   isCompleted  Boolean @default(false) @map("is_completed")
 
-  pomodoroSessionId String          @map("pomodoro_session_id")
-  pomodoroSession   PomodoroSession @relation(fields: [pomodoroSessionId], references: [id], onDelete: Cascade)
+  timerSessionId String       @map("timer_session_id")
+  timerSession   TimerSession @relation(fields: [timerSessionId], references: [id], onDelete: Cascade)
 
-  @@map("pomodoro_round")
+  @@map("timer_round")
 }
 
 enum Priority {

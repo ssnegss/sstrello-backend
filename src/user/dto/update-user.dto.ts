@@ -1,7 +1,7 @@
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
-import { PomodoroSettingsDto } from './pomodoro-settings.dto';
+import { TimerSettingsDto } from './timer-settings.dto';
 
-export class UpdateUserDto extends PomodoroSettingsDto {
+export class UpdateUserDto extends TimerSettingsDto {
 	@IsEmail()
 	@IsOptional()
 	email: string;
