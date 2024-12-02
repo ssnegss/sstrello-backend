@@ -16,6 +16,17 @@ export class TaskService {
 		});
 	}
 
+	getByTime(id: string, time: Date) {
+		return this.prisma.task.count({
+			where: {
+				userId: id,
+				createdAt: {
+					gte: time,
+				},
+			},
+		});
+	}
+
 	create(createTaskDto: CreateTaskDto) {
 		return 'This action adds a new task';
 	}
