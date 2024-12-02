@@ -3,6 +3,7 @@ import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
+	UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto } from './dto/auth.dto';
@@ -51,6 +52,18 @@ export class AuthService {
 			user,
 			...tokens,
 		};
+	}
+
+	async getNewTokens(refreshToken: string) {
+		const result = await this.jwt.verifyAsync(refreshToken);
+		if (!result) throw new UnauthorizedException('Invalid refresh token');
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { password, ...user } = await this.UserService.getById(result.id);
+
+		const tokens = this.issueTokens(user.id);
+
+		return { user, ...tokens };
 	}
 
 	private issueTokens(userId: string) {
