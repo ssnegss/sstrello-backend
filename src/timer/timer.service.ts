@@ -23,7 +23,7 @@ export class TimerService {
 			include: {
 				rounds: {
 					orderBy: {
-						id: 'desc',
+						id: 'asc',
 					},
 				},
 			},
