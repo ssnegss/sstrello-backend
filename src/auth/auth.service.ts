@@ -41,8 +41,9 @@ export class AuthService {
 
 	async register(dto: AuthDto) {
 		const isRegistered = await this.UserService.getByEmail(dto.email);
-		if (isRegistered)
+		if (isRegistered) {
 			throw new BadRequestException('User with the email already exists');
+		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { password, ...user } = await this.UserService.create(dto);
