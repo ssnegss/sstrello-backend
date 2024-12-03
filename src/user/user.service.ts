@@ -32,6 +32,17 @@ export class UserService {
 		});
 	}
 
+	getWithIntervals(id: string) {
+		return this.prisma.user.findUnique({
+			where: {
+				id,
+			},
+			select: {
+				intervalsCount: true
+			},
+		});
+	}
+
 	async getProfile(id: string) {
 		const profile = await this.getById(id);
 
