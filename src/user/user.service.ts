@@ -47,13 +47,13 @@ export class UserService {
 		const profile = await this.getById(id);
 
 		const totalTasks = profile.tasks.length;
-		const completedTasks = this.TaskService.getCompleted(id);
+		const completedTasks = await this.TaskService.getCompleted(id);
 
 		const todayStart = startOfDay(new Date());
 		const weekStart = startOfDay(subDays(new Date(), 7));
 
-		const todayTasks = this.TaskService.getByTime(id, todayStart);
-		const weekTasks = this.TaskService.getByTime(id, weekStart);
+		const todayTasks = await this.TaskService.getByTime(id, todayStart);
+		const weekTasks = await this.TaskService.getByTime(id, weekStart);
 
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { password, ...user } = profile;

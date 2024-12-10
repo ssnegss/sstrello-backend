@@ -7,13 +7,13 @@ import { PrismaService } from 'src/prisma.service';
 export class TaskService {
 	constructor(private prisma: PrismaService) {}
 
-	getAll(userId: string) {
+	async getAll(userId: string) {
 		return this.prisma.task.findMany({
 			where: { userId },
 		});
 	}
 
-	getCompleted(id: string) {
+	async getCompleted(id: string) {
 		return this.prisma.task.count({
 			where: {
 				userId: id,
@@ -22,7 +22,7 @@ export class TaskService {
 		});
 	}
 
-	getByTime(id: string, time: Date) {
+	async getByTime(id: string, time: Date) {
 		return this.prisma.task.count({
 			where: {
 				userId: id,
@@ -33,7 +33,7 @@ export class TaskService {
 		});
 	}
 
-	create(dto: CreateTaskDto, userId: string) {
+	async create(dto: CreateTaskDto, userId: string) {
 		return this.prisma.task.create({
 			data: {
 				...dto,
@@ -46,7 +46,7 @@ export class TaskService {
 		});
 	}
 
-	update(dto: UpdateTaskDto, taskId: string, userId: string) {
+	async update(dto: UpdateTaskDto, taskId: string, userId: string) {
 		return this.prisma.task.update({
 			where: {
 				userId,
@@ -56,7 +56,7 @@ export class TaskService {
 		});
 	}
 
-	delete(taskId: string, userId: string) {
+	async delete(taskId: string, userId: string) {
 		return this.prisma.task.delete({
 			where: {
 				id: taskId,
