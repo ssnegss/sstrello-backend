@@ -7,7 +7,7 @@ import { UpdateTimeBlockDto } from './dto/update-time-block.dto';
 export class TimeBlockService {
 	constructor(private prisma: PrismaService) {}
 
-	getAll(userId: string) {
+	async getAll(userId: string) {
 		return this.prisma.timeBlock.findMany({
 			where: { userId },
 			orderBy: {
@@ -16,7 +16,7 @@ export class TimeBlockService {
 		});
 	}
 
-	create(dto: CreateTimeBlockDto, userId: string) {
+	async create(dto: CreateTimeBlockDto, userId: string) {
 		return this.prisma.timeBlock.create({
 			data: {
 				...dto,
@@ -29,7 +29,7 @@ export class TimeBlockService {
 		});
 	}
 
-	update(dto: UpdateTimeBlockDto, timeBlockId: string, userId: string) {
+	async update(dto: UpdateTimeBlockDto, timeBlockId: string, userId: string) {
 		return this.prisma.timeBlock.update({
 			where: {
 				userId,
@@ -39,7 +39,7 @@ export class TimeBlockService {
 		});
 	}
 
-	delete(timeBlockId: string, userId: string) {
+	async delete(timeBlockId: string, userId: string) {
 		return this.prisma.timeBlock.delete({
 			where: {
 				id: timeBlockId,
