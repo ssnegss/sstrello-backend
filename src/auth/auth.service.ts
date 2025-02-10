@@ -17,7 +17,6 @@ export class AuthService {
 
 	private COOKIE_SETTINGS: CookieOptions = {
 		httpOnly: true,
-		domain: process.env.DOMAIN,
 		secure: true,
 		//lax if prod
 		sameSite: 'none',
