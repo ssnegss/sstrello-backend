@@ -12,6 +12,10 @@ async function bootstrap() {
 		credentials: true,
 		exposedHeaders: 'set-cookie',
 	});
+	app.use((req, res, next) => {
+		res.header('Access-Control-Allow-Origin', process.env.ORIGIN);
+		next();
+	});
 
 	await app.listen(process.env.PORT ?? 4200);
 }
